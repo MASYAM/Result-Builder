@@ -1,0 +1,24 @@
+
+#ed_term_header{
+    margin: 10px auto 0 auto;
+    padding:1px 0 0 0;
+    width:450px;
+    height:27px;
+    border:1px solid #ccc;
+    border-bottom-width:2px;
+    border-bottom-color: orange;
+    text-align: center; 
+    background:rgba(204,204,204,.3);
+    font-size:13px;
+    line-height: 25px;
+}
+#ed_term_div{
+    margin:auto;
+    width:450px;
+    height:95%;
+    border:1px solid #ccc;
+    border-bottom-width: 3px;
+    border-bottom-color: #999;
+    overflow: auto;
+}
+

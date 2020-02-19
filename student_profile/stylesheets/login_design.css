@@ -1,0 +1,153 @@
+@CHARSET "ISO-8859-1";
+
+body{
+    background-color: rgba(0,0,0,.1);
+}
+
+#message {
+	font-family:calibri;
+	text-align:center;
+	margin-bottom:20px;
+	background: rgba(0,0,0,.1);
+}
+
+#logIn_box {
+	width:800px;
+	height:500px;
+	margin:auto;
+        box-shadow:0px 0px 30px 5px rgba(0,0,0,.7);
+	background:linear-gradient(top, rgba(0,0,0,.8),rgba(0,0,0,.1) );
+	background:-webkit-linear-gradient(top, rgba(0,0,0,.8),rgba(0,0,0,.1));
+	background:-moz-linear-gradient(top, rgba(0,0,0,.8),rgba(0,0,0,.1));
+	background:-o-linear-gradient(top, rgba(0,0,0,.8),rgba(0,0,0,.1));
+        background: -ms-linear-gradient(top, rgba(0,0,0,.8),rgba(0,0,0,.1));
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#999999', endColorstr='#cccccc',GradientType=0 );
+	
+}
+
+#header {
+	width:800px;
+	height:80px;
+	float:left;
+	background:linear-gradient(top,#848484 9%,#bfbfbf);
+	background:-webkit-linear-gradient(top,#848484 9%,#bfbfbf);
+	background:-moz-linear-gradient(top,#848484 9%,#bfbfbf);
+	background:-o-linear-gradient(top,#848484 9%,#bfbfbf);
+        background: -ms-linear-gradient(top, rgba(0,0,0,.8),rgba(0,0,0,.1));
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#999999', endColorstr='#cccccc',GradientType=0 );
+
+}
+#middle {
+	width:799px;
+	height:399px;
+	float:left;
+	
+
+}
+#footer {
+	width:800px;
+	height:22px;
+	float:left;
+    background:#000;
+    text-align:center;
+    color:#c5c5c5;
+    font-family:calibri;
+    font-size:12px;
+    line-height:19px;
+    font-weight:bold;
+}
+
+.logoName {
+    font-family:calibri;
+    font-weight:bold;
+	text-shadow: -6px 0 2px rgba(0,0,0,.7);
+	font-size:35px;
+	color:#e0e0e0; /* for moz*/
+	    
+}
+
+.schoolName {
+    font-family:calibri;
+    font-weight:bold;
+	text-shadow: -5px 0 2px #e0e0e0;
+	font-size:35px;
+	color:rgba(0,0,0,.8); /* for moz*/
+	    
+}
+
+#accountForm {
+ width:300px;
+ height:350px; 
+ margin: 10px 0 0 auto;
+ border-radius:4px;
+ padding:10px;
+ float:right;
+}
+
+#logIn_header{
+   width:100px;
+   height:20px;
+   text-align:center;
+   background:linear-gradient(top,lightgray 90%,gray);
+   background:-webkit-linear-gradient(top,lightgray 90%,gray);
+   background:-moz-linear-gradient(top,lightgray 90%,gray);
+   background:-o-linear-gradient(top,lightgray 90%,gray);
+   border:1px solid lightgray;
+   color:rgba(0,0,0,.5);
+   font-weight:bold;
+   font-family:calibri;	
+   font-size:14px;
+   border-radius:4px;
+   line-height:15px;
+}
+
+
+.login {
+   float:right;
+}    
+
+.input_field{
+	width:90px;
+	height:13px;	
+	border:1px solid rgba(0,0,0,.2);
+	border-radius:4px;
+	font-size:10px;	
+	background:transparent;
+}
+
+.logIn {
+	width:40px;
+	height:16px;	
+    text-align:center;
+	border-radius:4px;
+    background:linear-gradient(top,lightgray 80%,gray);
+    background:-webkit-linear-gradient(top,lightgray 80%,gray);
+    background:-moz-linear-gradient(top,lightgray 80%,gray);
+    background:-o-linear-gradient(top,lightgray 80%,gray);
+	border:1px solid lightgray;
+	cursor:pointer;
+	font-weight:bold;
+	font-family:calibri;
+	font-size:10px;
+	line-height:3px;
+    color:rgba(0,0,0,.6);
+	
+}
+
+.logIn:hover {
+    background:linear-gradient(top,rgba(0,0,0,.2) 90%,gray);
+    background:-webkit-linear-gradient(top,rgba(0,0,0,.2) 90%,gray);
+    background:-moz-linear-gradient(top,rgba(0,0,0,.2) 90%,gray);
+    background:-o-linear-gradient(top,rgba(0,0,0,.2) 90%,gray);
+}
+.logIn:active {
+    background:gray;
+    color:#fff;
+}
+
+
+
+
+
+
+

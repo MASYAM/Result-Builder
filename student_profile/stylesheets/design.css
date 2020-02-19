@@ -1,0 +1,317 @@
+
+html { height: 100%; width: 100%; }
+body { 
+     min-width:1024px; 
+     height: 100%; 
+     width: 100%; 
+     margin: 0; 
+     padding: 0; 
+     border: 0; 
+     background: lightgray;
+     background:linear-gradient(top, silver 0%,#fff 20%,#fff 70%);
+     background: -webkit-linear-gradient(top, silver 0%,#fff 20%,#fff 70%);
+     background:-moz-linear-gradient(top, silver 0%,#fff 30%,#fff 70%);
+     background:-o-linear-gradient(top, silver 0%,#fff 30%,#fff 70%);
+     font-family: calibri; 
+}
+img { border: none; }
+table, tr, td, tr { border-collapse: collapse; vertical-align: top; text-align: center;}
+
+/*------Header Navigation-----*/
+#header_nav { 
+    float:left;
+    height: 6%;
+    width: 100%;
+    font-family:Nirmala UI;
+    font-size:12px; 
+    font-weight: bold;
+    background: #006666;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.header_nav_link{
+    color:#fff; 
+    text-decoration:none;
+    line-height: 300%;
+}
+.header_nav_link:hover{
+    text-decoration:underline;
+}
+.header_nav_link:active{
+    color:yellow;
+    text-decoration:underline;
+}
+
+.selected_header_nav_link{
+    color:#ffcc00;
+    font-weight: bold;
+    text-decoration:none;
+    line-height: 300%;
+}
+
+/* Note: IE 5 & 6 won't understand min-height */
+#school_heading { 
+    height: 15%;
+    width: 100%; 
+    float: left;
+/*    background: lightgray;
+    background:linear-gradient(top,lightgray 1%,#fff 80%);
+    background:-webkit-linear-gradient(top,lightgray 1%,#fff 80%);
+    background:-moz-linear-gradient(top,lightgray 1%,#fff 80%);
+    background:-o-linear-gradient(top,lightgray 1%,#fff 80%);*/
+}
+/*------Main Content-----*/
+#main { height: 76%;width: 99%; float: left;}
+
+/*------End of Main Content-----*/
+
+
+#footer {
+    height: 2%;
+    width: 100%;
+    text-align: right; 
+    background: transparent;  
+    float: left; 
+    color: #999;
+    font-size: 10px;
+    line-height: 18px;
+}
+
+
+#message {
+	font-family:calibri;
+	text-align:center;
+	margin-bottom:20px;
+	background: rgba(0,0,0,.1);
+}
+
+#submit_button {
+    text-decoration:none ;	      
+    width: 90px;
+    height: 25px;
+    border:1px solid rgba(0,0,0,.2);
+    box-shadow:  0 0 10px rgba(0,0,0,.5) inset;
+    background: #0099CC;
+    padding:0px;
+
+    font-family:Candara;
+    font-size: 13px;
+    font-weight:bold;
+    line-height:17px;
+    color: #fff;    	
+    }
+		
+#submit_button:hover {
+		
+    color:#000;
+    background:LightSteelBlue ;
+    box-shadow:  0 0 10px rgba(0,0,0,.5) inset;
+    cursor:pointer;
+		
+    }
+#submit_button:active {
+	color:#00FFFF;	
+	background: rgba(0,0,0,.6) ;
+	cursor:pointer;
+    }
+
+#submit_button_disabled {
+	text-decoration:none ;	    
+	float:left;	
+			
+    display: block;
+    position: relative;
+    width: 110px;
+    height: 25px;
+    border:1px solid rgba(0,0,0,.2);
+    box-shadow:  0 0 10px rgba(0,0,0,.1) inset;
+    background: rgb(216,216,216) ;
+    padding:0px;
+
+    font-family:Candara;
+    font-size: 13px;
+	font-weight:bold;
+    line-height: 24px;
+    color: rgba(0,0,0,.5); 
+}
+
+#text_box{
+    width:220px;
+    height:22px;
+    border:2px solid #ccc;
+}
+
+#student_photo{
+    width:180px;
+    height:180px;
+    /*border:1px solid #ccc;*/
+/*  border-top-width:2px;
+    border-top-color:#0099CC;*/
+    float:left;
+    border-bottom-width:3px;
+    border-bottom-color:#0099CC;
+}
+
+#student_identity{
+    width:180px;
+    height:62%;
+    /*border:1px solid #ccc;*/
+/*    border-top-width:2px;
+    border-top-color:#0099CC;*/
+    float:left;
+    overflow: auto;
+    
+}
+
+#result_year{
+    width:100%;
+    height:7%;
+    /*border:1px solid #ccc;*/
+/*    border-top-width:2px;
+    border-top-color:#0099CC;*/
+    float:left;
+    border-bottom-color:transparent;
+    background: #0099CC;
+}
+
+#yearly_student_identity{
+    width:95%;
+    height:160px;
+    margin: 20px;
+    
+    background: lightgray;
+    background:linear-gradient(top,#faf9f9 99.5%,#ccc .5%);
+    background:-webkit-linear-gradient(top,#faf9f9 99.5%,#ccc .5%);
+    background:-moz-linear-gradient(top,#faf9f9 99.5%,#ccc .5%);
+    background:-o-linear-gradient(top,#faf9f9 99.5%,#ccc .5%);
+}
+
+#yearly_term_name{
+    width:35%;
+    height:25px;
+    margin:auto;
+    text-align:center;
+    border:1px solid transparent;
+    border-bottom-width:2px;
+    border-bottom-color:#fff;
+    color:#006699;
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+    box-shadow:0px 1px 0px #000;
+}
+
+#student_result{
+    width:100%;
+    height:93%;
+    /*border:1px solid #ccc;*/
+/*    border-top-width:2px;
+    border-top-color:#0099CC;*/
+    float:left;
+    border-bottom-width:3px;
+    border-bottom-color:silver;
+    overflow: auto;
+    background: #f0efef;
+   
+}
+
+
+.tr1_hover {   
+    background:#DEE1E4;
+    font-family:calibri;
+}
+.tr2_hover {
+    background:#faf9f9;
+    font-family:calibri; 
+}
+.tr1_hover:hover {
+    background:AliceBlue ;
+}
+.tr2_hover:hover {
+    background:AliceBlue ;
+}
+
+
+/*Scroll bar Design*/
+
+::-webkit-scrollbar {
+    width: 11px;
+    height: 8px;   
+}
+::-webkit-scrollbar-corner {
+/*background-image:url(http://help.apple.com/mobileme/images/corner.png);
+background-repeat:no-repeat;*/
+background-color:transparent;
+} 
+::-webkit-scrollbar-track {
+    background-color: #e6e5e3 /*transparent*/ ;
+      /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);*/
+} /* the new scrollbar will have a flat appearance with the set background color */
+::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border:1px solid #ccc;
+} /* this will style the thumb, ignoring the track */
+ /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
+ ::-webkit-scrollbar-thumb:hover {
+      background-color: AliceBlue;
+      border:1px solid #ccc;
+}
+::-webkit-scrollbar-corner {
+      background-color: black;
+} /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
+
+
+
+/*End of Scroll bar Design*/
+
+
+/*-------------select tag style-------------*/
+
+select{
+      -webkit-appearance: button;
+      -webkit-border-radius: 3px;
+      -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      -webkit-padding-end: 20px;
+      -webkit-padding-start: 10px;
+      -webkit-user-select: none;
+      background-image: url(../../images/dwn_arrow.png), 
+      -webkit-linear-gradient(DarkGray, #FFF 50%, #FFF);
+
+      background-position: center right;
+      background-repeat: no-repeat;
+      border: 1px solid #CCC;
+      color: #000;
+      font-size: 90%;
+      font-family:calibri;
+      font-weight: bold;
+      margin: 0;
+      overflow: hidden;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height:25px; 
+      cursor:pointer;
+    }
+
+@-moz-document url-prefix() {
+    select{  
+             
+        border-radius: 3px;      
+        background:-moz-linear-gradient(DarkGray, #FFF 50%, #FFF); 
+        border: 1px solid #CCC;
+        color: #000;
+        font-size: 90%;
+        font-family:Comfortaa, Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding:2px;
+        height:25px; 
+        cursor:pointer;
+    }
+}
+
+.div_opt_main_subject {
+	height:60px;
+	float:left;
+	background: -webkit-linear-gradient(DarkGray, #FFF 50%, #FFF);
+}
+
+
+/*-------------End of select tag style-------------*/
