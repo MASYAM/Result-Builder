@@ -1,7 +1,7 @@
 
   </div> <!-- end of div id="main" -->           
 
-    <div id="footer"><span style="margin-right: 20px;">Copyright <?php echo date("Y", time()); ?>, All Rights Reserved</span></div>
+    <div id="footer"></div>
   </body>
 </html>
 <?php if(isset($db)) { $db->close_connection(); } ?>
