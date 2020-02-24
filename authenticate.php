@@ -59,23 +59,23 @@ $recaptchavalidation=TRUE;
 //Trapped brute force attackers and give them more hard work by providing a captcha-protected page
 
 $iptocheck= $_SERVER['REMOTE_ADDR'];
-$iptocheck= mysql_real_escape_string($iptocheck);
+$iptocheck= mysqli_real_escape_string($dbhandle, $iptocheck);
 
-if ($fetch = mysql_fetch_array( mysql_query("SELECT `loggedip` FROM `ipcheck` WHERE `loggedip`='$iptocheck'"))) 
+    if ($fetch = mysqli_fetch_array( mysqli_query($dbhandle,"SELECT `loggedip` FROM `ipcheck` WHERE `loggedip`='".$iptocheck."'")))
   {
         //Already has some IP address records in the database
         //Get the total failed login attempts associated with this IP address
 
-        $resultx = mysql_query("SELECT `failedattempts` FROM `ipcheck` WHERE `loggedip`='$iptocheck'");
-        $rowx = mysql_fetch_array($resultx);
+        $resultx = mysqli_query($dbhandle, "SELECT `failedattempts` FROM `ipcheck` WHERE `loggedip`='".$iptocheck."'");
+        $rowx = mysqli_fetch_array($resultx);
         $loginattempts_total = $rowx['failedattempts'];
 
-        If ($loginattempts_total>$maxfailedattempt) 
+        If ($loginattempts_total>$maxfailedattempt)
         {
             //too many failed attempts allowed, redirect and give 403 forbidden.
 
-            header(sprintf("Location: %s", $forbidden_url));	
-            exit;
+            //header(sprintf("Location: %s", $forbidden_url));
+            //exit;
         }
   }
 
@@ -94,34 +94,27 @@ if ((isset($_POST["pass"])) && (isset($_POST["user"])) && ($_SESSION['LAST_ACTIV
 //Username and password has been submitted by the user
 //Receive and sanitize the submitted information
 
-    function sanitize($data)
-     {
-        $data=trim($data);
-        $data=mysql_real_escape_string($data);
-        return $data;
-     }
-
-    $user=sanitize($_POST["user"]);
-    $pass= sanitize($_POST["pass"]);
+     $user= filter_var($_POST["user"], FILTER_SANITIZE_STRING);
+     $pass= filter_var($_POST["pass"], FILTER_SANITIZE_STRING);
 
 //validate username
-if (!($fetch = mysql_fetch_array( mysql_query("SELECT `username` FROM `authentication` WHERE `username`='$user'")))) 
-  {
-    //no records of username in database
-    //user is not yet registered
+if (!($fetch = mysqli_fetch_array( mysqli_query($dbhandle,"SELECT `username` FROM `authentication` WHERE `username`='".$user."'"))))
+{
+  //no records of username in database
+  //user is not yet registered
 
-    $registered=FALSE;
- }
+  $registered=FALSE;
+}
 
-if ($registered==TRUE) 
-  {
+if ($registered==TRUE)
+ {
 
-    //Grab login attempts from MySQL database for a corresponding username
-    $result1 = mysql_query("SELECT `loginattempt` FROM `authentication` WHERE `username`='$user'");
-    $row = mysql_fetch_array($result1);
-    $loginattempts_username = $row['loginattempt'];
-
- }
+   //Grab login attempts from MySQL database for a corresponding username
+   $result1 = mysqli_query($dbhandle, "SELECT `loginattempt` FROM `authentication` WHERE `username`='".$user."'");
+   $row = mysqli_fetch_array($result1);
+   $loginattempts_username = $row['loginattempt'];
+    
+}
 
 /*if(($loginattempts_username>3) || ($loginattempts_total>3)) 
   {
@@ -143,139 +136,137 @@ if ($registered==TRUE)
 
 //Get correct hashed password based on given username stored in MySQL database
 
-if ($registered==TRUE) 
- {
-	
-    //username is registered in database, now get the hashed password
+if ($registered==TRUE)
+{
+   //username is registered in database, now get the hashed password
 
-    $result = mysql_query("SELECT `password` FROM `authentication` WHERE `username`='$user'");
-    $row = mysql_fetch_array($result);
-    $correctpassword = $row['password'];
-    $salt = substr($correctpassword, 0, 64);
-    $correcthash = substr($correctpassword, 64, 64);
-    $userhash = hash("sha256", $salt . $pass);
+   $result = mysqli_query($dbhandle,"SELECT `password` FROM `authentication` WHERE `username`='".$user."'");
+   $row = mysqli_fetch_array($result);
+   $correctpassword = $row['password'];
+   $salt = substr($correctpassword, 0, 64);
+   $correcthash = substr($correctpassword, 64, 64);
+   $userhash = hash("sha256", $salt . $pass);
 
-  }
- if ((!($userhash == $correcthash)) || ($registered==FALSE) || ($recaptchavalidation==FALSE)) 
-    {
+ }
+  if ((!($userhash == $correcthash)) || ($registered==FALSE) || ($recaptchavalidation==FALSE))
+     {
 
-            //user login validation fails
+             //user login validation fails
 
-            $validationresults=FALSE;
+             $validationresults=FALSE;
 
-            //log login failed attempts to database
+             //log login failed attempts to database
 
-            if ($registered==TRUE) 
-            {
-                    $loginattempts_username= $loginattempts_username + 1;
-                    $loginattempts_username=intval($loginattempts_username);
+             if ($registered==TRUE)
+             {
+                     $loginattempts_username= $loginattempts_username + 1;
+                     $loginattempts_username=intval($loginattempts_username);
 
-                    //update login attempt records
+                     //update login attempt records
 
-                    mysql_query("UPDATE `authentication` SET `loginattempt` = '$loginattempts_username' WHERE `username` = '$user'");
+                 mysqli_query("UPDATE `authentication` SET `loginattempt` = '".$loginattempts_username."' WHERE `username` = '".$user."'");
 
-                    //Possible brute force attacker is targeting registered usernames
-                    //check if has some IP address records
+                     //Possible brute force attacker is targeting registered usernames
+                     //check if has some IP address records
 
-                    if (!($fetch = mysql_fetch_array( mysql_query("SELECT `loggedip` FROM `ipcheck` WHERE `loggedip`='$iptocheck'")))) 
-                     {
+                 if (!($fetch = mysqli_fetch_array( mysqli_query($dbhandle,"SELECT `loggedip` FROM `ipcheck` WHERE `loggedip`='".$iptocheck."'"))))
+                      {
 
-                       //no records
-                       //insert failed attempts
+                        //no records
+                        //insert failed attempts
 
-                       $loginattempts_total=1;
-                       $loginattempts_total=intval($loginattempts_total);
-                        mysql_query("INSERT INTO `ipcheck` (`loggedip`, `failedattempts`) VALUES ('$iptocheck', '$loginattempts_total')");	
-                     } else
-                          {
-                            //has some records, increment attempts
+                        $loginattempts_total=1;
+                        $loginattempts_total=intval($loginattempts_total);
+                          mysqli_query($dbhandle,"INSERT INTO `ipcheck` (`loggedip`, `failedattempts`) VALUES ('".$iptocheck."', '".$loginattempts_total."')");
+                      } else
+                           {
+                             //has some records, increment attempts
 
-                             $loginattempts_total= $loginattempts_total + 1;
-                             mysql_query("UPDATE `ipcheck` SET `failedattempts` = '$loginattempts_total' WHERE `loggedip` = '$iptocheck'");
-                          }
-            }
-
-            //Possible brute force attacker is targeting randomly
-
-            if ($registered==FALSE) 
-            {
-                if (!($fetch = mysql_fetch_array( mysql_query("SELECT `loggedip` FROM `ipcheck` WHERE `loggedip`='$iptocheck'")))) 
-                 {
-
-                   //no records
-                   //insert failed attempts
-
-                   $loginattempts_total=1;
-                   $loginattempts_total=intval($loginattempts_total);
-                   mysql_query("INSERT INTO `ipcheck` (`loggedip`, `failedattempts`) VALUES ('$iptocheck', '$loginattempts_total')");	
-                 }else 
-                     {
-                        //has some records, increment attempts
-
-                        $loginattempts_total= $loginattempts_total + 1;
-                        mysql_query("UPDATE `ipcheck` SET `failedattempts` = '$loginattempts_total' WHERE `loggedip` = '$iptocheck'");
-                     }
+                              $loginattempts_total= $loginattempts_total + 1;
+                               mysqli_query($dbhandle,"UPDATE `ipcheck` SET `failedattempts` = '".$loginattempts_total."' WHERE `loggedip` = '".$iptocheck."'");
+                           }
              }
-  }else 
-      {
-            //user successfully authenticates with the provided username and password
 
-            //Reset login attempts for a specific username to 0 as well as the ip address
+             //Possible brute force attacker is targeting randomly
 
-            $loginattempts_username=0;
-            $loginattempts_total=0;
-            $loginattempts_username=intval($loginattempts_username);
-            $loginattempts_total=intval($loginattempts_total);
-            mysql_query("UPDATE `authentication` SET `loginattempt` = '$loginattempts_username' WHERE `username` = '$user'");
-            mysql_query("UPDATE `ipcheck` SET `failedattempts` = '$loginattempts_total' WHERE `loggedip` = '$iptocheck'");
+             if ($registered==FALSE)
+             {
+                 if (!($fetch = mysqli_fetch_array( mysqli_query($dbhandle,"SELECT `loggedip` FROM `ipcheck` WHERE `loggedip`='".$iptocheck."'"))))
+                  {
 
-            //Generate unique signature of the user based on IP address
-            //and the browser then append it to session
-            //This will be used to authenticate the user session 
-            //To make sure it belongs to an authorized user and not to anyone else.
-            //generate random salt
-            function genRandomString() {
-            //credits: http://bit.ly/a9rDYd
-                $length = 50;
-                $characters = "0123456789abcdef";      
-                for ($p = 0; $p < $length ; $p++) {
-                    $string .= $characters[mt_rand(0, strlen($characters))];
-                }
+                    //no records
+                    //insert failed attempts
 
-                return $string;
-            }
-            $random=genRandomString();
-            $salt_ip= substr($random, 0, $length_salt);
+                    $loginattempts_total=1;
+                    $loginattempts_total=intval($loginattempts_total);
+                      mysqli_query($dbhandle,"INSERT INTO `ipcheck` (`loggedip`, `failedattempts`) VALUES ('".$iptocheck."', '".$loginattempts_total."')");
+                  }else
+                      {
+                         //has some records, increment attempts
 
-            //hash the ip address, user-agent and the salt
-            $useragent=$_SERVER["HTTP_USER_AGENT"];
-            $hash_user= sha1($salt_ip.$iptocheck.$useragent);
+                         $loginattempts_total= $loginattempts_total + 1;
+                          mysqli_query($dbhandle,"UPDATE `ipcheck` SET `failedattempts` = '".$loginattempts_total."' WHERE `loggedip` = '".$iptocheck."'");
+                      }
+              }
+   }else
+       {
+             //user successfully authenticates with the provided username and password
 
-            //concatenate the salt and the hash to form a signature
-            $signature= $salt_ip.$hash_user;
+             //Reset login attempts for a specific username to 0 as well as the ip address
 
-            //Regenerate session id prior to setting any session variable
-            //to mitigate session fixation attacks
+             $loginattempts_username=0;
+             $loginattempts_total=0;
+             $loginattempts_username=intval($loginattempts_username);
+             $loginattempts_total=intval($loginattempts_total);
+           mysqli_query($dbhandle,"UPDATE `authentication` SET `loginattempt` = '".$loginattempts_username."' WHERE `username` = '".$user."'");
+           mysqli_query($dbhandle,"UPDATE `ipcheck` SET `failedattempts` = '".$loginattempts_total."' WHERE `loggedip` = '".$iptocheck."'");
 
-            session_regenerate_id();
+             //Generate unique signature of the user based on IP address
+             //and the browser then append it to session
+             //This will be used to authenticate the user session
+             //To make sure it belongs to an authorized user and not to anyone else.
+             //generate random salt
+             function genRandomString() {
+                 $length = 50;
+                 $characters = "0123456789abcdef";
+                 for ($p = 0; $p < $length ; $p++) {
+                     $string .= $characters[mt_rand(0, strlen($characters))];
+                 }
 
-            //Finally store user unique signature in the session
-            //and set logged_in to TRUE as well as start activity time
+                 return $string;
+             }
+             $random=genRandomString();
+             $salt_ip= substr($random, 0, $length_salt);
 
-            $_SESSION['signature'] = $signature;
-            $_SESSION['logged_in'] = TRUE;
-            $_SESSION['LAST_ACTIVITY'] = time(); 
-            $_SESSION['username'] = $user;
-            ini_set('max_execution_time', 1800); //3600 seconds = 60 minutes
-            ini_set("memory_limit","1500M");
-            
-            $query_welcome_message = mysql_query("SELECT welcome_message FROM authentication WHERE username='$user' ") or die(mysql_error());
-            $result_query_welcome_message = mysql_fetch_array($query_welcome_message);
-            $welcome_message = $result_query_welcome_message['welcome_message'];
-            $_SESSION['welcome_message'] = $welcome_message;
-            
-      }
-}//end of if ((isset($_POST["pass"])) && (isset($_POST["user"])) && ($_SESSION['LAST_ACTIVITY']==FALSE))
+             //hash the ip address, user-agent and the salt
+             $useragent=$_SERVER["HTTP_USER_AGENT"];
+             $hash_user= sha1($salt_ip.$iptocheck.$useragent);
+
+             //concatenate the salt and the hash to form a signature
+             $signature= $salt_ip.$hash_user;
+
+             //Regenerate session id prior to setting any session variable
+             //to mitigate session fixation attacks
+
+             session_regenerate_id();
+
+             //Finally store user unique signature in the session
+             //and set logged_in to TRUE as well as start activity time
+
+             $_SESSION['signature'] = $signature;
+             $_SESSION['logged_in'] = TRUE;
+             $_SESSION['LAST_ACTIVITY'] = time();
+             $_SESSION['username'] = $user;
+             ini_set('max_execution_time', 1800); //3600 seconds = 60 minutes
+             ini_set("memory_limit","1500M");
+             
+             $query_welcome_message = mysqli_query($dbhandle,"SELECT welcome_message FROM authentication WHERE username='".$user."' ") or die(mysql_error());
+             $result_query_welcome_message = mysqli_fetch_array($query_welcome_message);
+             $welcome_message = $result_query_welcome_message['welcome_message'];
+             $_SESSION['welcome_message'] = $welcome_message;
+             
+       }
+ }//end of if ((isset($_POST["pass"])) && (isset($_POST["user"])) && ($_SESSION['LAST_ACTIVITY']==FALSE))
 
 
 if (!$_SESSION['logged_in']): 
@@ -322,8 +313,7 @@ if (!$_SESSION['logged_in']):
 			<div id="wrapper">
 					<div id="content">
 						<div id="header" style="box-shadow:-2px 0px 5px rgba(0,0,0,.3);">
-                                                    <img src="images/pdbd-logo.png" style="line-height:10px;" width="100px" height="40px">
-                                                    <span style="color:#fff;font-size:26px;font-weight:bold;font-family: 'Electrolize', cursive;"> Result Publisher</span>
+                                                    <span style="color:#fff;font-size:26px;font-weight:bold;font-family: 'Electrolize', cursive;"> Result Builder</span>
 						</div>
                                             <div style="height:30px;box-shadow:-2px 2px 5px rgba(0,0,0,.3);">
                                               
@@ -373,8 +363,7 @@ if (!$_SESSION['logged_in']):
 				</div>   
 
 <div id="wrapperbottom_branding">
-    <div id="wrapperbottom_branding_text"  style="box-shadow:-2px 0px 5px rgba(0,0,0,.3);">By <a href="#" style="text-decoration:none">Prodigy</a>. <a href="#" style="text-decoration:none">Copyright &copy; 2013</a>
-    </div>
+    
 </div>
             
         
