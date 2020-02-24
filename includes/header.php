@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Result Builder</title>
-    <link rel="shortcut icon" href="images/Logofinal.ico" />
     <link href="stylesheets/design.css" media="all" rel="stylesheet" type="text/css" />
     <link href="stylesheets/design2.css" media="all" rel="stylesheet" type="text/css" />
     <link href="stylesheets/css.pagination2.css" media="all" rel="stylesheet" type="text/css" />

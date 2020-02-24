@@ -20,7 +20,7 @@ function result_making1($subject,$grade,$term_name,$section_name,$student_id,$wo
 
                              if ($result !== 'No Result Found') 
                              {
-                                   $catch_number = '';
+                                   //$catch_number[] = '';
                                   foreach ($result as $result_val) 
                                    {
                                        if (empty($result_val['number']) == FALSE)

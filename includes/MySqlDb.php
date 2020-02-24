@@ -19,20 +19,20 @@ class myDatabase{
     
     public function open_connection($user_db_select)
     {
-        $this->connection = mysql_connect("localhost","root","") or die(mysql_error());
+        $this->connection = mysqli_connect("localhost","root","",$user_db_select) or die(mysql_error());
         $this->select_db($user_db_select);
     }
     
     public function select_db($user_db_select)
     {
-        $db_select = mysql_select_db($user_db_select,  $this->connection) or die(mysql_error());
+        $db_select = mysqli_select_db($this->connection,$user_db_select) or die(mysql_error());
     }
 
     public function close_connection()
     {
         if(isset($this->connection))
         {
-            mysql_close($this->connection);
+            mysqli_close($this->connection);
             unset($this->connection);
         }
     }
@@ -40,10 +40,10 @@ class myDatabase{
     public function query($sql)
     {
        $this->last_query = $sql;
-       $query_run = mysql_query($sql,  $this->connection);
+       $query_run = mysqli_query($this->connection, $sql);
        if(!$query_run)
        {
-          $error = 'Last query: '.$this->last_query .'<br>Mysql error: '.mysql_error();
+          $error = 'Last query: '.$this->last_query .'<br>Mysql error: '.mysqli_error();
           die($error);
        }
        return $query_run;
@@ -67,28 +67,28 @@ class myDatabase{
     
     public function fetch_array($result)
     {
-        return mysql_fetch_array($result);
+        return mysqli_fetch_array($result);
     }
     
     public function fetch_field($result)
     {
-        return mysql_fetch_field($result);
+        return mysqli_fetch_field($result);
     }
     
     public function num_rows($result)
     {
-        return mysql_num_rows($result);
+        return mysqli_num_rows($result);
     }
     
     public function affected_rows()
     {
-        return mysql_affected_rows($this->connection);
+        return mysqli_affected_rows($this->connection);
     }
     
     public function insert_id()
     {
         //get the last id inserted over the current db connection
-        return mysql_insert_id($this->connection);
+        return mysqli_insert_id($this->connection);
     }
     
     public function find_by_sql($column,$table,$where,$limit)
@@ -311,9 +311,9 @@ $db = new myDatabase($user_db_select);
 function get_user_database($user)
 {
 
-    if($user == '') //first four letter of admin's username
+    if($user == 'admi') //first four letter of admin's username
     {
-       $r = ""; //define database name
+       $r = "result_builder"; //define database name
     }elseif($user == '')//first four letter of admin's username
     {
        $r = ""; //define database name
